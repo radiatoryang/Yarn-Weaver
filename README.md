@@ -1,3 +1,5 @@
+![screengrab GIF of YarnWeaver in action](https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif)
+
 # Yarn-Weaver
 simple tool built in Unity C# to test Yarn files, by Robert Yang
 
