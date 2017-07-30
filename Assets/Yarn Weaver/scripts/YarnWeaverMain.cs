@@ -40,7 +40,8 @@ public class YarnWeaverMain : MonoBehaviour {
 
 		if (previousFilePaths.Count > 0) {
 			// convert that into dropdown population
-			recentFilesList.AddOptions( previousFilePaths.Select( x => (Path.GetFileNameWithoutExtension( x ) + "\n<size=10>" + x +"</size>").Replace("%20", " ") ).ToList() );
+			// we also want to remove the "file:///" if it's there
+			recentFilesList.AddOptions( previousFilePaths.Select( x => (Path.GetFileNameWithoutExtension( x ) + "\n<size=10>" + ( x.StartsWith("file:///") ? x.Replace("file:///", "") : x) +"</size>").Replace("%20", " ") ).ToList() );
 		} else {
 			recentFilesList.gameObject.SetActive( false );
 		}
@@ -122,7 +123,8 @@ public class YarnWeaverMain : MonoBehaviour {
 
 		// save to playerprefs
 		if (previousFilePaths.Contains( currentFilePath )) {
-			previousFilePaths.Remove( currentFilePath );
+			Debug.Log( "detecting duplicate filepaths in file history..." );
+			previousFilePaths.RemoveAll( x => x == currentFilePath );
 		}
 		previousFilePaths.Insert( 0, currentFilePath );
 
