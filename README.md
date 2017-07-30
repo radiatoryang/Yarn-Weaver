@@ -13,6 +13,12 @@ I thought this functionality would've been in the Yarn editor itself -- but it's
 - latest Windows and Mac OSX builds are here: https://github.com/radiatoryang/Yarn-Weaver/releases/
 - there might be bugs with the "open file dialog" on certain versions of OSX
 
+## IMPORTANT NOTE:
+so, YarnSpinner doesn't really know which node in your Yarn file is the "start"... to try to figure it out, YarnWeaver searches your Yarn file for 2 things:
+- a node that starts with the word "Start"
+- a node that starts with the filename (e.g. "Sally.json" would prompt a search for a node labeled "Sally")
+- ... and if those searches fail, then it just starts with the first node it finds, which usually means the oldest node in your Yarn file
+
 ### uses the following:
 - YarnSpinner https://github.com/thesecretlab/YarnSpinner/
 - UnityStandaloneFileBrowser https://github.com/gkngkc/UnityStandaloneFileBrowser
