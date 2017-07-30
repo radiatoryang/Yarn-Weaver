@@ -1,4 +1,5 @@
-<img width=30% align=left src=https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif> # Yarn-Weaver
+# Yarn-Weaver
+<img width=30% align=left src=https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif> 
 simple tool built in Unity C# to playtest / test-run [Yarn](https://github.com/InfiniteAmmoInc/Yarn) files (if you're not familiar, [Yarn](https://github.com/InfiniteAmmoInc/Yarn) is a Twine-like dialogue scripting engine + node editor tool that you can use for Unity games)... I thought this functionality would've been in the Yarn editor itself -- but it's not, so until then, there's this tool to fill in that gap! My suggested workflow is this: 
 
 1. keep the Yarn editor window open, and keep the Yarn Weaver window open at the same time
