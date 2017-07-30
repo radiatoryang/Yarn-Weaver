@@ -1,0 +1,59 @@
+title: Start
+tags: 
+colorID: 0
+position: 396,213
+---
+<<if $alreadyPlayed == 1>>
+Oh, it's you again! Welcome back!
+<<else>>
+Hello. This is Yarn Weaver, a simple tool to help you test your Yarn scripts.
+<<endif>>
+
+<<if $apples != null and $apples > 0>>
+(You still have apples left, by the way! They're going to waste!)
+-> Sorry! (eat an apple)
+    That's more like it. <<set $apples to $apples - 1>>
+-> No thanks. (don't eat an apple)
+    Fine... but you know what they say about apples. An apple a day... something something.
+But anyway, uh... what did you want to know?
+<<endif>>
+
+-> Tell me about the interface.
+    At the top of the screen, you'll see: a PLAY (▶) button, a REFRESH (↻) button, and a CLOSE (×) button.
+    -> The PLAY button?
+        It plays the Yarn file. You can play a Yarn file multiple times.
+    -> The REFRESH button?
+        It resets all the variables on the Yarn and reloads the file.
+    -> The CLOSE button?
+        It closes the current file.
+    Also, at the bottom of the window, you'll see a debug window.
+    This DEBUG window helps you track your variables. Look, I'll set one now:
+    <<set $apples to 5>>
+    As you can see below, I just set a variable called "$apples" to 5.
+-> OK, so how should I use this thing?
+    Well...
+
+OK, now...
+The suggested workflow is this: keep Yarn open in one window, and keep this tool (YarnWeaver) open in another window.
+When you edit your file in Yarn, switch back into YarnWeaver and load it up.
+After you load a file, you can click the REFRESH button above to see your changes.
+Ok, that's pretty much it. Good luck!
+-> Thanks! You too, buddy!!
+    Yeaahhhh that's the spirit!!! :) :) :) <<set $happy to $happy + 1>>
+-> Uh oh... I don't know about this...
+    Don't worry, you'll get the hang of it. <<set $sad to $sad + 1>>
+-> I thought you were going to be more helpful.
+    Well, as my friend's dad would always say, "Life is full of disappointments." <<set $disappoint to $disappoint +1>>
+
+<<if $apples != null and $apples > 0>>
+(Oh, and feel free to keep those apples!!! It's my gift to you!)
+<<endif>>
+
+<<if $alreadyPlayed == 1 >>
+And feel free to come back anytime...
+<<set $bye to "but seriously, go make stuff now">>
+<<else>>
+But seriously... Bye now!
+<<set $alreadyPlayed to 1>>
+<<endif>>
+===
