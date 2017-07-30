@@ -1,7 +1,7 @@
-![screengrab GIF of YarnWeaver in action](https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif)
-
 # Yarn-Weaver
 simple tool built in Unity C# to playtest / test-run [Yarn](https://github.com/InfiniteAmmoInc/Yarn) files... if you're not familiar, Yarn is a Twine-like dialogue scripting engine that you can use for Unity games
+
+![screengrab GIF of YarnWeaver in action](https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif)
 
 I thought this functionality would've been in the Yarn editor itself -- but it's not, so until then, there's this! My suggested workflow is this: 
 
