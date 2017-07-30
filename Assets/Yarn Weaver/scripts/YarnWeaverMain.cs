@@ -141,7 +141,7 @@ public class YarnWeaverMain : MonoBehaviour {
 	string GetStartNode () {
 		// search for a node that starts with "Start" or with the filename
 		string filename = Path.GetFileNameWithoutExtension( currentFilePath );
-		var startSearch = dialogueRunner.dialogue.allNodes.Where( x => x.StartsWith("Start") || x.StartsWith(filename) ).ToArray();
+		var startSearch = dialogueRunner.dialogue.allNodes.Where( x => x.ToLower().StartsWith("start") || x.ToLower().StartsWith(filename.ToLower()) ).ToArray();
 		if (startSearch != null && startSearch.Length > 0) {
 			return startSearch[0];
 		} else { // otherwise, just go for the first node we find
