@@ -1,13 +1,11 @@
 # Yarn-Weaver
-simple tool built in Unity C# to playtest / test-run [Yarn](https://github.com/InfiniteAmmoInc/Yarn) files... if you're not familiar, Yarn is a Twine-like dialogue scripting engine that you can use for Unity games
+<img width=30% align=right src=https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif> 
 
-![screengrab GIF of YarnWeaver in action](https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif)
+a simple tool built in Unity C# to playtest / test-run [Yarn](https://github.com/InfiniteAmmoInc/Yarn) files (if you're not familiar, [Yarn](https://github.com/InfiniteAmmoInc/Yarn) is a Twine-like dialogue scripting engine + node editor tool that you can use for Unity games)... I thought this functionality would've been in the Yarn editor itself -- but it's not, so until then, there's this tool to fill in that gap! My suggested workflow is this: 
 
-I thought this functionality would've been in the Yarn editor itself -- but it's not, so until then, there's this! My suggested workflow is this: 
-
-1. keep the Yarn eitor window open, and keep the Yarn Weaver window open at the same time
+1. keep the Yarn editor window open, and keep the Yarn Weaver window open at the same time
 2. when you edit a script in Yarn editor, save it as JSON...
-3. ... and then in Yarn Weaver, open the file / refresh it, and play!
+3. ... and then in Yarn Weaver, open the file and/or refresh it to see new changes, and play!
 
 ## RELEASE BUILDS:
 - latest Windows and Mac OSX builds are here: https://github.com/radiatoryang/Yarn-Weaver/releases/
