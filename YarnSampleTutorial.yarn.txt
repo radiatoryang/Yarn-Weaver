@@ -49,11 +49,11 @@ Ok, that's pretty much it. Good luck!
 (Oh, and feel free to keep those apples!!! It's my gift to you!)
 <<endif>>
 
-<<if $alreadyPlayed == 1 >>
+<<if $alreadyPlayed == 0 >>
+<<set $alreadyPlayed to 1>>
 And feel free to come back anytime...
 <<set $bye to "but seriously, go make stuff now">>
 <<else>>
 But seriously... Bye now!
-<<set $alreadyPlayed to 1>>
 <<endif>>
 ===
