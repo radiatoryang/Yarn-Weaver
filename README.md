@@ -8,7 +8,7 @@ A simple tool built in Unity C# to playtest / test-run [Yarn](https://github.com
 2. when you edit a script in Yarn editor, save it as a **yarn.txt** (.json is supported too, but it's harder to diff / read in a text editor)
 3. ... and then in Yarn Weaver, open the file and/or refresh it to see new changes, and play!
 
-## RELEASE BUILDS:
+## DOWNLOAD
 - latest Windows and Mac OSX builds are here: https://github.com/radiatoryang/Yarn-Weaver/releases/
 - there might be bugs with the "open file dialog" on certain versions of OSX
 
