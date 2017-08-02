@@ -14,9 +14,12 @@ A simple tool built in Unity C# to playtest / test-run [Yarn](https://github.com
 
 ## IMPORTANT NOTE:
 so, YarnSpinner doesn't really know which node in your Yarn file is the "start"... to try to figure it out, YarnWeaver searches your Yarn file for 2 things:
-- a node that starts with the word "Start"
-- a node that starts with the filename (e.g. "Sally.json" would prompt a search for a node labeled "Sally")
+- a node title beginning with the word "Start" (or "start" or "START" or "sTaRt")
+- a node title beginning with the filename (e.g. "Sally.json" would prompt a search for a node labeled "Sally")
 - ... and if those searches fail, then it just starts with the first node it finds, which usually means the oldest node in your Yarn file
+
+## ROADMAP / POSSIBLE FUTURE FEATURES
+https://github.com/radiatoryang/Yarn-Weaver/wiki
 
 ## uses the following:
 - Yarn https://github.com/InfiniteAmmoInc/Yarn
