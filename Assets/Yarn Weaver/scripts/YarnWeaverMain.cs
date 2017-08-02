@@ -18,7 +18,7 @@ public class YarnWeaverMain : MonoBehaviour {
 	public Dropdown recentFilesList;
 	public TextAsset sampleYarn;
 
-	public GameObject sidebar;
+	public GameObject sidebar; // sidebar is actually more like the "start menu" now
 	public GameObject[] workArea;
 
 	DialogueRunner dialogueRunner;
@@ -42,13 +42,12 @@ public class YarnWeaverMain : MonoBehaviour {
 			// convert that into dropdown population
 			// we also want to remove the "file:///" if it's there
 			recentFilesList.AddOptions( previousFilePaths.Select( x => (Path.GetFileNameWithoutExtension( x ) + "\n<size=10>" + ( x.StartsWith("file:///") ? x.Replace("file:///", "") : x) +"</size>").Replace("%20", " ") ).ToList() );
-		} else {
-			recentFilesList.gameObject.SetActive( false );
 		}
 
 		dialogueRunner = FindObjectOfType<DialogueRunner>();
 		filenameLabel.text = "";
 
+		// when user clicks "Refresh" button, it reloads the entire scene... this detects whether we should skip the start menu and go directly into the Yarn file
 		if (tutorialMode == true) {
 			OnClickLoadSample();
 		} else if (currentFilePath != null && currentFilePath.Length > 0) {
@@ -93,18 +92,27 @@ public class YarnWeaverMain : MonoBehaviour {
 		SceneManager.LoadScene( SceneManager.GetActiveScene().buildIndex );
 	}
 
+	// when the user clicks on "LOAD YARN FILE" from the start menu
 	public void OnOpenButtonClick () {
+		// start in desktop by default
 		var startPath = System.Environment.GetFolderPath( System.Environment.SpecialFolder.Desktop );
-		if (currentFilePath != null && currentFilePath.Length > 0) {
-			startPath = Path.GetDirectoryName( currentFilePath );
+		// but if the user has recent files, then start in the folder of the most recent file
+		if ( previousFilePaths != null && previousFilePaths.Count > 0) {
+			startPath = Path.GetDirectoryName( previousFilePaths[0].Replace("file:///", "") );
 		}
-
-		var paths = StandaloneFileBrowser.OpenFilePanel("select Yarn JSON file...", startPath, "json", false);
+		// let user use JSON or YARN.TXT
+		var extensions = new [] {
+			new ExtensionFilter("Yarn script files", "json", "txt" ),
+			new ExtensionFilter("All Files", "*" ),
+		};
+		// ok actually do the FileOpen dialog now
+		var paths = StandaloneFileBrowser.OpenFilePanel("select Yarn JSON or Yarn.TXT file...", startPath, extensions, false);
 		if (paths.Length > 0) {
 			StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
 		}
 	}
 
+	// from the main menu
 	public void OnClickQuitButton () {
 		Application.Quit();
 	}
@@ -121,7 +129,7 @@ public class YarnWeaverMain : MonoBehaviour {
 		previousFilePaths.Add( url );
 		dialogueRunner.AddScript( loader.text );
 
-		// save to playerprefs
+		// save path into playerprefs
 		if (previousFilePaths.Contains( currentFilePath )) {
 			Debug.Log( "detecting duplicate filepaths in file history..." );
 			previousFilePaths.RemoveAll( x => x == currentFilePath );
@@ -141,12 +149,12 @@ public class YarnWeaverMain : MonoBehaviour {
 	}
 
 	string GetStartNode () {
-		// search for a node that starts with "Start" or with the filename
+		// search for a node that starts with "Start" (case-insensitive) or with the filename
 		string filename = Path.GetFileNameWithoutExtension( currentFilePath );
 		var startSearch = dialogueRunner.dialogue.allNodes.Where( x => x.ToLower().StartsWith("start") || x.ToLower().StartsWith(filename.ToLower()) ).ToArray();
 		if (startSearch != null && startSearch.Length > 0) {
 			return startSearch[0];
-		} else { // otherwise, just go for the first node we find
+		} else { // otherwise, just go for the first node we find, which is usually the oldest
 			return dialogueRunner.dialogue.allNodes.ToArray()[0];
 		}
 	}

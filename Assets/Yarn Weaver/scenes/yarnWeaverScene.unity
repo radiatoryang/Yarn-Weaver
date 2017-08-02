@@ -1488,10 +1488,10 @@ RectTransform:
   m_Father: {fileID: 46219614}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 31.400024, y: -35.19998}
-  m_SizeDelta: {x: 31.599998, y: 31.600006}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -136.4, y: -54.9}
+  m_SizeDelta: {x: 52.200012, y: 52.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &695279784
 MonoBehaviour:
@@ -1588,7 +1588,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 4
-    m_MaxSize: 50
+    m_MaxSize: 32
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1736,7 +1736,7 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 4
-    m_MaxSize: 50
+    m_MaxSize: 32
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1826,8 +1826,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2124390279}
   m_HandleRect: {fileID: 2124390278}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2000,10 +2000,10 @@ RectTransform:
   m_Father: {fileID: 46219614}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 112, y: -34}
-  m_SizeDelta: {x: 165, y: 34}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 22, y: -54}
+  m_SizeDelta: {x: 298, y: 54}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &935858489
 MonoBehaviour:
@@ -2027,11 +2027,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: 41a02fb722c0b714695ce18a6b1f3d04, type: 3}
-    m_FontSize: 20
+    m_FontSize: 40
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
-    m_MaxSize: 24
+    m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2133,7 +2133,7 @@ GameObject:
   - component: {fileID: 972239711}
   - component: {fileID: 972239714}
   m_Layer: 5
-  m_Name: Load Yarn JSON
+  m_Name: Load Yarn File
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3433,7 +3433,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 359.85, y: -84}
+  m_AnchoredPosition: {x: 359.85, y: -130}
   m_SizeDelta: {x: 611, y: 43}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1446377285
@@ -3593,14 +3593,14 @@ MonoBehaviour:
     m_FontStyle: 1
     m_BestFit: 1
     m_MinSize: 4
-    m_MaxSize: 50
+    m_MaxSize: 32
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LOAD YARN JSON...
+  m_Text: LOAD YARN FILE (.JSON or YARN.TXT)
 --- !u!222 &1471232620
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3687,13 +3687,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1491325591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b9f5e99f293b45ccb4c99d120962677, type: 3}
+  m_Script: {fileID: 11500000, guid: 4bec29c0a230741bdac901dba8da47ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sourceText: []
+  stringGroups: []
+  shouldOverrideLanguage: 0
+  overrideLanguage: 10
   variableStorage: {fileID: 1491325595}
   dialogueUI: {fileID: 1491325594}
-  startNode: Start
+  startNode: 
   startAutomatically: 0
   automaticCommands: 1
 --- !u!4 &1491325593
