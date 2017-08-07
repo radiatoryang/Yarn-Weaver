@@ -18,8 +18,10 @@ so, YarnSpinner doesn't really know which node in your Yarn file is the "start".
 - a node title beginning with the filename (e.g. "Sally.json" would prompt a search for a node labeled "Sally")
 - ... and if those searches fail, then it just starts with the first node it finds, which usually means the oldest node in your Yarn file
 
-## ROADMAP / POSSIBLE FUTURE FEATURES
-https://github.com/radiatoryang/Yarn-Weaver/wiki
+## HOW TO CONTRIBUTE
+accepting pull requests here: https://github.com/radiatoryang/Yarn-Weaver/issues
+
+ideally, post a comment or reply if you're working on something, so that we don't double-up on work
 
 ## uses the following:
 - Yarn https://github.com/InfiniteAmmoInc/Yarn
