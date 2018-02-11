@@ -70,6 +70,9 @@ namespace Yarn.Unity.Example {
         /// dialogue is active and to restore them when dialogue ends
         public RectTransform gameControlsContainer;
 
+		public Button dialoguePanelContinue;
+		bool playerPressedContinue = false;
+
         void Awake ()
         {
             // Start by hiding the container, line and option buttons
@@ -111,8 +114,12 @@ namespace Yarn.Unity.Example {
             if (continuePrompt != null)
                 continuePrompt.SetActive (true);
 
+			// 11 Feb 2018: replaced "wait for user input via Input.anyKeyDown" with a Button UI instead
+			dialoguePanelContinue.interactable = true;
+			playerPressedContinue = false;
+
             // Wait for any user input
-            while (Input.anyKeyDown == false) {
+			while (!playerPressedContinue) {
                 yield return null;
             }
 
@@ -122,7 +129,13 @@ namespace Yarn.Unity.Example {
             if (continuePrompt != null)
                 continuePrompt.SetActive (false);
 
+			dialoguePanelContinue.interactable = false;
+
         }
+
+		public void OnClickPlayerContinue () {
+			playerPressedContinue = true;
+		}
 
         /// Show a list of options, and wait for the player to make a selection.
         public override IEnumerator RunOptions (Yarn.Options optionsCollection, 

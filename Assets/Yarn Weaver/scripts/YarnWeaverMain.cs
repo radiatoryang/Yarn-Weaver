@@ -26,7 +26,7 @@ namespace YarnWeaver {
 		DialogueRunner dialogueRunner;
 		YarnValidator validator;
 
-		static string currentFilePath;
+		public static string currentFilePath, currentText;
 		List<string> previousFilePaths = new List<string>();
 
 		static bool tutorialMode = false;
@@ -86,6 +86,8 @@ namespace YarnWeaver {
 
 		public void OnClickLoadSample() {
 			tutorialMode = true;
+			currentText = sampleYarn.text;
+			currentFilePath = "sampleYarn.json";
 			dialogueRunner.AddScript( sampleYarn );
 			StartCurrentFile();
 		}
@@ -139,7 +141,8 @@ namespace YarnWeaver {
 			// try to add the script... if there are compile errors, we'll want to remember them for later
 			var exceptions = new List<string>();
 			try {
-				dialogueRunner.AddScript( loader.text );
+				currentText = loader.text;
+				dialogueRunner.AddScript( currentText );
 			} catch ( Exception ex ) {
 				
 				// to be extra helpful, let's show an excerpt from the broken script
