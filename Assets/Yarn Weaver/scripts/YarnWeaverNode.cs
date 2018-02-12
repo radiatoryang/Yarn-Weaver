@@ -7,11 +7,13 @@ using UnityEngine.EventSystems;
 namespace YarnWeaver {
 
 	public class YarnWeaverNode : MonoBehaviour, IEndDragHandler {
-
+		
+		public YarnWeaverLoader.NodeInfo nodeInfo;
 		public int nodeIndex;
-		public string nodeTitle, nodeBody;
-		public Color nodeColor;
-		public Vector2 nodePos;
+		public string nodeTitle { get { return nodeInfo.title; } set { nodeInfo.title = value; } }
+		public string nodeBody { get { return nodeInfo.body; } set { nodeInfo.body = value; } }
+		public Color nodeColor; // TODO: ??? what is ColorID tho?
+		public Vector2 nodePos { get { return new Vector2( nodeInfo.position.x, nodeInfo.position.y ); } set { var pos = new YarnWeaverLoader.NodeInfo.Position(); pos.x = Mathf.RoundToInt(value.x); pos.y = Mathf.RoundToInt(value.y); nodeInfo.position = pos; } }
 
 		[SerializeField] Image headerColor, bodyColor;
 		[SerializeField] Text textHeader, textBody;

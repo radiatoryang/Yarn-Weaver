@@ -31,11 +31,14 @@ namespace YarnWeaver {
 
 		static bool tutorialMode = false;
 		bool noCompileErrors = false;
+		bool isLoadingFiles = false;
 
 		const string prefsKey = "YarnWeaver_File";
 
 		// Use this for initialization
 		void Start () {
+			Application.targetFrameRate = 30; // nothing fancy
+
 			// setup stuff
 			validator = GetComponent<YarnValidator>();
 
@@ -89,6 +92,7 @@ namespace YarnWeaver {
 			currentText = sampleYarn.text;
 			currentFilePath = "sampleYarn.json";
 			dialogueRunner.AddScript( sampleYarn );
+			YarnWeaverEditor.instance.LoadAllDataInFile( currentFilePath, sampleYarn.text );
 			StartCurrentFile();
 		}
 
@@ -103,22 +107,29 @@ namespace YarnWeaver {
 		}
 
 		// when the user clicks on "LOAD YARN FILE" from the start menu
-		public void OnOpenButtonClick () {
+		public void OnOpenButtonClick (bool useFolderMode) {
 			// start in desktop by default
 			var startPath = System.Environment.GetFolderPath( System.Environment.SpecialFolder.Desktop );
 			// but if the user has recent files, then start in the folder of the most recent file
 			if ( previousFilePaths != null && previousFilePaths.Count > 0) {
 				startPath = Path.GetDirectoryName( previousFilePaths[0].Replace("file:///", "") );
 			}
-			// let user use JSON or YARN.TXT
-			var extensions = new [] {
-				new ExtensionFilter("Yarn script files", "json", "txt" ),
-				new ExtensionFilter("All Files", "*" ),
-			};
-			// ok actually do the FileOpen dialog now
-			var paths = StandaloneFileBrowser.OpenFilePanel("select Yarn JSON or Yarn.TXT file...", startPath, extensions, false);
-			if (paths.Length > 0) {
-				StartCoroutine(OutputRoutine(new System.Uri(paths[0]).AbsoluteUri));
+
+			string[] paths;
+			if( useFolderMode ) { // if folder mode, let them choose a path and detect all the files with the extensions
+				paths = StandaloneFileBrowser.OpenFolderPanel("select FOLDER of Yarns (will search all subfolders too! be careful!)", startPath, false);
+			} else {
+				// let user use JSON or YARN.TXT
+				var extensions = new [] {
+					new ExtensionFilter( "Yarn script files (.json, .yarn.txt)", "json", "txt" ),
+					new ExtensionFilter( "All Files", "*" ),
+				};
+				// ok actually do the FileOpen dialog now
+				paths = StandaloneFileBrowser.OpenFilePanel( "select Yarn JSON or YARN.TXT file...", startPath, extensions, false );
+			}
+
+			if (paths != null && paths.Length > 0) {
+				StartCoroutine(OutputRoutine(paths[0])); // only do the first item of the array, no multiselect is enabled
 			}
 		}
 
@@ -127,28 +138,59 @@ namespace YarnWeaver {
 			Application.Quit();
 		}
 
-		IEnumerator OutputRoutine(string url) {
+		IEnumerator OutputRoutine(string path) {
 			dialogueRunner.Stop();
 			while (dialogueRunner.isDialogueRunning) {
 				yield return 0;
 			}
 			dialogueRunner.Clear();
-			var loader = new WWW(url);
-			yield return loader;
-			currentFilePath = url;
-			previousFilePaths.Add( url );
 
-			// try to add the script... if there are compile errors, we'll want to remember them for later
+			isLoadingFiles = true;
+
+			// detect files at path
+			string[] paths;
+			// IS IT A SINGLE FILE?
+			if( (path.EndsWith( ".txt" ) || path.EndsWith( ".json" )) && File.Exists( path ) ) {
+				paths = new string[] { new System.Uri(path).AbsoluteUri }; // convert to file:/// URI for WWW loader
+			}  // IS IT A FOLDER?
+			else if( Directory.Exists( path ) ) {
+				paths = Directory.GetFiles( path, "*.yarn.txt" );
+				paths = paths.Concat( Directory.GetFiles( path, "*.json" ) ).ToArray();
+				paths = paths.Select( x => new System.Uri( x ).AbsoluteUri ).ToArray(); // convert to file:/// URI for WWW loader
+			} // IF NEITHER, then bail 
+			else {
+				isLoadingFiles = false;
+				yield break;
+			}
+
+			// last chance: double-check if valid files
+			YarnWeaverFileFormatConverter.CheckFileList( paths, YarnWeaverFileFormatConverter.ALLOWED_EXTENSIONS );
+			// TODO: if bad, then bail
+
+			// validate and analyze files for YarnValidator / Analysis
+			var scriptDataForValidation = new Dictionary<string, string>();
 			var exceptions = new List<string>();
-			try {
-				currentText = loader.text;
-				dialogueRunner.AddScript( currentText );
-			} catch ( Exception ex ) {
+
+			// if it's valid, then let's process all the files
+			foreach( var file in paths ) {
+				var loader = new WWW( file );
+				yield return loader;
+
+				// try to add the script... if there are compile errors, we'll want to remember them for later
+				try {
+					currentText = loader.text;
+					// add it to the DialogueRunner (to simulate how YarnSpinner would actually do it)
+					dialogueRunner.AddScript( currentText );
+					// also add it to the analyzer
+					scriptDataForValidation.Add( Path.GetFileNameWithoutExtension(file), currentText );
+					// sigh... also load it into YarnWeaverEditor...
+					YarnWeaverEditor.instance.LoadAllDataInFile( file, currentText );
+				} catch( Exception ex ) {
 				
-				// to be extra helpful, let's show an excerpt from the broken script
-				// 10 September 2017 -- OH NO, turns out we can't actually do this yet, due to how DialogueRunner works
-				// 						I'll just leave this here, maybe investigate later
-				/*
+					// to be extra helpful, let's show an excerpt from the broken script
+					// 10 September 2017 -- OH NO, turns out we can't actually do this yet, due to how DialogueRunner works
+					// 						I'll just leave this here, maybe investigate later
+					/*
 				if( ex.Message.StartsWith( "In file <input>: Error parsing node " ) ) {
 					// extract node name
 					var node = ex.Message.Substring( 36 ).Split( ':' )[0];
@@ -162,12 +204,23 @@ namespace YarnWeaver {
 				}
 				*/
 
-				exceptions.Add( ex.Message );
+					exceptions.Add( ex.Message );
+				}
 			}
-			// if we did have compile errors, we'll want to do other stuff (e.g. don't let user press Play button)
+			// if we did have compile errors, we'll want to do other stuff (TODO -- e.g. don't let user press Play button)
 			noCompileErrors = exceptions.Count == 0;
+			validator.StartMain( scriptDataForValidation, exceptions );
+
+			// load the file now (or try to!)
+			if( noCompileErrors ) {
+				StartCurrentFile();
+			} 
+			isLoadingFiles = false;
 
 			// save path into playerprefs
+			currentFilePath = path;
+			previousFilePaths.Add( path );
+
 			if (previousFilePaths.Contains( currentFilePath )) {
 				Debug.Log( "detecting duplicate filepaths in file history..." );
 				previousFilePaths.RemoveAll( x => x == currentFilePath );
@@ -180,19 +233,6 @@ namespace YarnWeaver {
 				PlayerPrefs.SetString( prefsKey + i.ToString(), previousFilePaths[i] );
 			}
 			PlayerPrefs.Save();
-
-			yield return 0;
-
-			// validate and analyze files
-			// TODO: add support for multiple files
-			var scriptData = new Dictionary<string, string>();
-			scriptData.Add( Path.GetFileNameWithoutExtension(currentFilePath), loader.text );
-			validator.StartMain( scriptData, exceptions );
-
-			// load the file now (or try to!)
-			if( noCompileErrors ) {
-				StartCurrentFile();
-			} 
 		}
 
 		string GetStartNode () {
