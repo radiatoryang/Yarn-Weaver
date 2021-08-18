@@ -1,3 +1,8 @@
+## UPDATE, 18 AUGUST 2021
+- you shouldn't use this anymore, it doesn't really support any Yarn syntax since Yarn Spinner v1.0+ basically
+- I'm working on newer tools to replace this, but it's slow going sorry
+- I'm going to archive this so you know there's no more updates / support planned, sorry
+
 # Yarn-Weaver
 <img width=30% align=right src=https://raw.githubusercontent.com/radiatoryang/Yarn-Weaver/master/yarnWeaver_sample.gif> 
 
